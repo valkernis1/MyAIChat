@@ -1,0 +1,32 @@
+# Codemagic CI configuration for MyAIChat
+# Docs: https://docs.codemagic.io/yaml/yaml-getting-started/
+#
+# This workflow builds the app for the iOS Simulator (no code signing required),
+# which is ideal for verifying that the skeleton compiles on CI.
+
+workflows:
+  ios-build:
+    name: iOS Build (Simulator)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      vars:
+        XCODE_PROJECT: "MyAIChat.xcodeproj"
+        XCODE_SCHEME: "MyAIChat"
+      xcode: latest
+    scripts:
+      - name: Show available simulators
+        script: |
+          xcrun simctl list devices available
+      - name: Build (iOS Simulator, no code signing)
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
+    artifacts:
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/**/*.app
