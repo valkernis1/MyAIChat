@@ -9,11 +9,7 @@ import SwiftUI
 
 /// The main chat screen showing the message list and the input bar.
 struct ChatView: View {
-    @StateObject private var viewModel: ChatViewModel
-
-    init(viewModel: ChatViewModel = ChatViewModel()) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
+    @StateObject private var viewModel = ChatViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
